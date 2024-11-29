@@ -1,0 +1,6 @@
+.Trash/
+.DS_Store
+*.ipynb
+*.pkg
+google-cloud-sdk/
+*.txt
