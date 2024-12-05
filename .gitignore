@@ -5,7 +5,7 @@
 google-cloud-sdk/
 *.txt
 Library/
-Downloads/
+!Downloads/
 Applications/
 !Downloads/python_project/
 !Downloads/python_project/**/
