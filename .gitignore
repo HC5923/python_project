@@ -4,3 +4,6 @@
 *.pkg
 google-cloud-sdk/
 *.txt
+Library/
+Downloads/
+Applications/
