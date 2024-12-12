@@ -1,5 +1,5 @@
 import pygame, math, random
-# 1. 게임 초기화
+# 1. 게임 초기화ㅇ
 pygame.init()
 # 2. 게임창 옵션 설정
 size = (800, 1000)
