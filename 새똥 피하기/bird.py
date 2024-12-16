@@ -84,10 +84,10 @@ class dung:
     def show(self):
         screen.blit(self.img, self.pos)
 
-point_font = pygame.font.Font("C:/Windows/Fonts/BMDOHYEON_ttf.ttf", 50)
-finalp_font = pygame.font.Font("C:/Windows/Fonts/BMDOHYEON_ttf.ttf", 80)
-ready_font = pygame.font.Font("C:/Windows/Fonts/BMDOHYEON_ttf.ttf", 80)
-ready2_font = pygame.font.Font("C:/Windows/Fonts/BMDOHYEON_ttf.ttf", 20)
+point_font = pygame.font.Font("BMDOHYEON_ttf.ttf", 50)
+finalp_font = pygame.font.Font("BMDOHYEON_ttf.ttf", 80)
+ready_font = pygame.font.Font("BMDOHYEON_ttf.ttf", 80)
+ready2_font = pygame.font.Font("BMDOHYEON_ttf.ttf", 20)
         
 exit = False
 game_ready = False
