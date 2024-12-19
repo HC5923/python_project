@@ -46,8 +46,23 @@ class person:
         self.move = 10
         self.timer = 0
         self.ani_move = 0.2
+        self.is_jumping = False  # 점프 상태
+        self.jump_speed = -15    # 점프 초기 속도
+        self.gravity = 0.5       # 중력 가속도
+        self.vertical_speed = 0  # 현재 속도 (점프나 낙하 시 사용)
+    
+    def update(self):
+        if self.is_jumping:
+            self.pos = (self.pos[0], self.pos[1] + self.vertical_speed)
+            self.vertical_speed += self.gravity  # 중력 가속도 적용
+            if self.pos[1] >= size[1] - self.size[1]: # 바닥에 닿으면 점프 종료
+                self.pos = (self.pos[0], size[1] - self.size[1])
+                self.is_jumping = False
+                self.vertical_speed = 0
+    
     def show(self):
         screen.blit(self.img, self.pos)
+
 class bird:
     def __init__(self):
         self.timer = 0
@@ -144,8 +159,15 @@ while not exit:
                     left_go = True
                 elif key_name == "right":
                     right_go = True
-                elif key_name == "space" and game_over == True:
-                    play_again = True
+                elif key_name == "space" and not player.is_jumping and not game_over: # 점프 동작 시작
+                    player.is_jumping = True
+                    player.vertical_speed = player.jump_speed
+                if not game_ready:  # 게임 준비 중일 때
+                    if key_name == "space":
+                        game_ready = True  # 게임 시작
+                if game_over:  # 게임 오버 상태일 때
+                    if key_name == "space":
+                        play_again = True  # 다시 시작 플래그 설정
             if event.type == pygame.KEYUP:
                 key_name = pygame.key.name(event.key)
                 if key_name == "left":
@@ -158,6 +180,8 @@ while not exit:
         now_time = pygame.time.get_ticks()
         if game_over == False:
             total_time = now_time - game_start_time
+        if not game_over:
+            player.update()  # 점프 상태 업데이트
         # 새 생성
         if random.random() < 0.05:
             bb = bird()
