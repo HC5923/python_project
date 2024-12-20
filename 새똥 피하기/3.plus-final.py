@@ -1,5 +1,5 @@
 import pygame, math, random
-# 1. 게임 초기화
+# 1. 게임 초기화 #
 pygame.init()
 # 2. 게임창 옵션 설정
 size = (800, 1000)
@@ -15,7 +15,7 @@ def sound_read(file_name):
     sound.set_volume(0.2)
     return sound
 sound_drop = sound_read("drop")
-sound_sad = sound_read("sad") 
+sound_sad = sound_read("sad")
 sound_sad.set_volume(0.5)
 def tup_r(tup):
     temp_list = []
