@@ -202,7 +202,7 @@ while not exit:
                     dd = dung(round(bb.pos[0]+bb.size[0]/2), bb.pos[1]+bb.size[1], bb.move_x)
                     dd_list.append(dd)
                     bb.drop = True  
-        # 새똥 움직임
+        # 새똥 움직임 #####################
         for dd in dd_list:
             dd.move_y += dd.a_y
             dd.pos = (dd.pos[0]+dd.move_x , dd.pos[1]+dd.move_y)   
