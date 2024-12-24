@@ -28,7 +28,7 @@ def img_read(file_name, resize):
     img_size = (img_size[0]*resize, img_size[1]*resize)
     img = pygame.transform.smoothscale(img,img_size)
     return img
-person_static = img_read("char_static",0.08)
+person_static = img_read("bobby_static",0.08)
 person_dead = img_read("char_dead",0.15)
 person_size = person_static.get_size()
 p_list = [img_read("char_0",0.15),img_read("char_1",0.15),img_read("char_2",0.15),
