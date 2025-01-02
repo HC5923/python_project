@@ -1,5 +1,5 @@
-from selenium import webdriver #selenium 모듈 설치해야함 (pip install selenium -> pip show selenium)
-import chromedriver_autoinstaller #chromedriver-autoinstaller 모듈 설치해야함 (pip install chromedriver-autoinstaller)
+from selenium import webdriver #모듈 설치(pip install selenium -> pip show selenium)
+import chromedriver_autoinstaller #모듈 설치 (pip install chromedriver-autoinstaller)
 from time import sleep
 
 from urllib.request import Request, urlopen
