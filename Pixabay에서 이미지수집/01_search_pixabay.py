@@ -13,7 +13,7 @@ driver.implicitly_wait(5)
 url = "https://pixabay.com/ko/images/search/사과/"
 driver.get(url=url)
 
-image_xpath = "/html/body/div[1]/div[1]/div/div[2]/div[3]/div/div/div[3]/div[3]/div/a/img"
+image_xpath = "/html/body/div[1]/div[1]/div/div[2]/div[2]/div/div/div[3]/div[3]/div/a/img"
 image_url = driver.find_element(By.XPATH, image_xpath).get_attribute('src')
 print("image_url:", image_url)
 

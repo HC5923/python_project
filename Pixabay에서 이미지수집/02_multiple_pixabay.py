@@ -1,46 +1,52 @@
-from selenium import webdriver  # selenium 모듈 설치
-import chromedriver_autoinstaller  # chromedriver-autoinstaller 모듈 설치
-from time import sleep
-from urllib.request import Request, urlopen
+from selenium import webdriver
+import chromedriver_autoinstaller
 from selenium.webdriver.common.by import By
+import requests
+import os
 
-# Chromedriver 자동 설치 및 실행
+# ChromeDriver 설치 및 초기화
 chromedriver_autoinstaller.install()
 driver = webdriver.Chrome()
 driver.implicitly_wait(5)
 
-# URL 설정
 url = "https://pixabay.com/ko/images/search/사과/"
 driver.get(url=url)
 
-all_images = set()
-
-# 이미지 영역 탐색
-image_area_xpath = "/html/body/div[1]/div[1]/div/div[2]/div[2]/div"
+# 이미지 영역 찾기
+image_area_xpath = "/html/body/div[1]/div[1]/div/div[2]/div[2]/div/div"
 image_area = driver.find_element(By.XPATH, image_area_xpath)
 image_elements = image_area.find_elements(By.TAG_NAME, "img")
 
 # 이미지 URL 수집
+image_urls = []
 for image_element in image_elements:
-    image_url = (
-        image_element.get_attribute("data-src") or
-        image_element.get_attribute("data-lazy") or
-        image_element.get_attribute("src")
-    )
-    if image_url and "cdn.pixabay.com/photo/" in image_url:
-        all_images.add(image_url)
+    image_url = image_element.get_attribute("data-lazy") or image_element.get_attribute("src")
+    # placeholder 이미지(`blank.gif`)는 제외
+    if "blank.gif" not in image_url:
+        image_urls.append(image_url)
 
-print(f"총 이미지 개수: {len(all_images)}")
+# 안전한 파일 이름 생성 함수
+def safe_filename(index, url):
+    ext = os.path.splitext(url.split("/")[-1])[-1]  # 확장자 추출
+    return f"apple_{index}{ext}"
 
 # 이미지 다운로드
-for idx, image_url in enumerate(all_images):
+for i, image_url in enumerate(image_urls):
     try:
-        image_byte = Request(image_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with open(f"apple{idx}.jpg", "wb") as f:
-            f.write(urlopen(image_byte).read())
-        print(f"[다운로드 성공] apple{idx}.jpg")
-    except Exception as e:
-        print(f"[다운로드 실패] {image_url} - {e}")
+        # HTTP GET 요청
+        response = requests.get(image_url, stream=True)
+        response.raise_for_status()  # 요청 실패 시 예외 발생
 
-# 브라우저 종료
+        # 안전한 파일 이름 생성
+        file_name = safe_filename(i, image_url)
+
+        # 이미지 파일 저장
+        with open(file_name, "wb") as f:
+            for chunk in response.iter_content(1024):
+                f.write(chunk)
+        print(f"Downloaded: {file_name}")
+    except Exception as e:
+        print(f"Failed to download {image_url}: {e}")
+
+# 종료
 driver.quit()
