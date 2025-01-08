@@ -15,7 +15,7 @@ def crawl_image(keyword, pages):
         url = f"https://pixabay.com/ko/images/search/{keyword}/?pagi={i}"
         driver.get(url=url)
 
-        # 이미지 영역 XPath (최종 코드에서 사용된 XPath)
+        # 이미지 영역 XPath
         image_xpath = "//div[contains(@class, 'verticalMasonry')]//img"
         try:
             image_elements = driver.find_elements(By.XPATH, image_xpath)
