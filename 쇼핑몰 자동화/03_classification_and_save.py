@@ -1,17 +1,20 @@
-# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 03. 브랜드명과 업체명 찾기
+# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 04. 브랜드명으로 필터링하고 업체명으로 저장하기
 import pandas as pd
 import openpyxl
 # pd.set_option('display.max_columns', None)
 
 class ClassificationExcel:
 
-    def __init__(self, order_xlsx_filename, partner_info_xlsx_filename):
+    path = ''
+
+    def __init__(self, order_xlsx_filename, partner_info_xlsx_filename, path='result'):
         # 주문목록 (데이터를 가공함)
         df = pd.read_excel(order_xlsx_filename)
         df = df.rename(columns=df.iloc[1]) #1번을 열제목으로 쓰겠다
         df = df.drop([df.index[0], df.index[1]])
         df = df.reset_index(drop=True)
         self.order_list = df
+        self.path = path
 
         # 파트너목록
         df_partners = pd.read_excel(partner_info_xlsx_filename)
@@ -37,9 +40,9 @@ class ClassificationExcel:
 
             df_filtered = self.order_list[self.order_list['상품명'].str.contains(brand_name)]
             # print(df_filtered)
-            df_filtered.to_excel(f'[메가몰] {partner_name}.xlsx')
+            df_filtered.to_excel(f'{self.path}/[메가몰] {partner_name}.xlsx')
 
 
 if __name__ == '__main__':
-    ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx')
+    ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx', '20250117')
     ce.classify()
