@@ -1,7 +1,7 @@
 # Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 03. 브랜드명과 업체명 찾기
 import pandas as pd
 import openpyxl
-
+# pd.set_option('display.max_columns', None)
 
 class ClassificationExcel:
 
@@ -22,21 +22,22 @@ class ClassificationExcel:
 
     def classify(self):
         
-        for i, row in self.order_list.head(5).iterrows(): # df 데이터를 >> 이터로우즈=2개의 행들을 쭉 반복하겠다는 뜻 / head(5)=너무 많아서 복잡하니까 위에서 5개만 뽑겠다
+        for i, row in self.order_list.iterrows(): # df 데이터를 >> 이터로우즈=2개의 행들을 쭉 반복하겠다는 뜻 / head(5)=너무 많아서 복잡하니까 위에서 5개만 뽑겠다
             brand_name = ''
+            partner_name = ''
             idx_partner = 0
             for j in range(len(self.brands)):
                 if self.brands[j] in row['상품명']:
                     print(f'{self.brands[j]}이(가) {j}번째에 포함되어 있습니다.')
                     brand_name = self.brands[j]
-                    idx_partner = j
+                    partner_name = self.partners[j]
                     break
-            print(f'{row["상품명"]} 은 {brand_name} 브랜드 입니다. {j}번째')
-            print(f'업체명:{self.partners[idx_partner]}')
-            # print(row['상품명'])
+            # print(f'{row["상품명"]} 은 {brand_name} 브랜드 입니다. {j}번째')
+            # print(f'업체명:{partner_name}')
 
-        print(len(self.brands), self.brands)
-        print(len(self.partners), self.partners)
+            df_filtered = self.order_list[self.order_list['상품명'].str.contains(brand_name)]
+            # print(df_filtered)
+            df_filtered.to_excel(f'[메가몰] {partner_name}.xlsx')
 
 
 if __name__ == '__main__':
