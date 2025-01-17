@@ -1,6 +1,6 @@
-# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 04. 브랜드명으로 필터링하고 업체명으로 저장하기
+# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 05. 분류한 파일에 주문건수 넣기
 import pandas as pd
-import openpyxl
+from openpyxl.reader.excel import load_workbook
 # pd.set_option('display.max_columns', None)
 
 class ClassificationExcel:
@@ -42,7 +42,14 @@ class ClassificationExcel:
             # print(df_filtered)
             df_filtered.to_excel(f'{self.path}/[메가몰] {partner_name}.xlsx')
 
+    def set_count(self):
+        wb = load_workbook('20250117/[메가몰] 그레이스개러지.xlsx')
+        ws = wb.active
+        print('value:', ws['B1'].value)
+        print('value:', ws['B2'].value)
+
 
 if __name__ == '__main__':
     ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx', '20250117')
-    ce.classify()
+    # ce.classify()
+    ce.set_count()
