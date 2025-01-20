@@ -1,7 +1,9 @@
 # Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 06. 포ㄴ트 지정하고 여러개 파일에 모두 적용하기
+import os # 이전 코드와 달라진 부분
 import pandas as pd
 from openpyxl.reader.excel import load_workbook
 from datetime import datetime
+from openpyxl.styles import Font, Alignment # 이전 코드와 달라진 부분
 # pd.set_option('display.max_columns', None)
 
 class ClassificationExcel:
@@ -43,8 +45,7 @@ class ClassificationExcel:
             # print(df_filtered)
             df_filtered.to_excel(f'{self.path}/[메가몰] {partner_name}.xlsx')
 
-    def set_count(self):
-        file_name = '20250117/[메가몰] 다온마켓.xlsx'
+    def set_form(self, file_name): # 이전 코드와 달라진 부분
         wb = load_workbook(file_name)
         ws = wb.active
         print('value:', ws['B1'].value)
@@ -59,14 +60,28 @@ class ClassificationExcel:
         ws.insert_rows(1)
 
         now_day = datetime.now().strftime('%Y-%m-%d')
-        # A1
+# 이전 코드와 달라진 부분
+        # A1 
         ws['A1'] = f'발송요청내역 [총 {row_cnt}건] {now_day}'
+        ws['A1'].font = Font(size=11, bold=True)
+        ws.merge_cells('A1:U1')
+        ws['A1'].alignment = Alignment(horizontal='left')
 
 
         wb.save(file_name)
 
+    def set_forms(self):
+        file_list = os.listdir(self.path)
+        print(file_list)
+
+        for file_name in file_list:
+            file_name = f'{self.path}/{file_name}'
+            self.set_form(file_name)
+
+
+# 이전 코드와 달라진 부분
 
 if __name__ == '__main__':
-    ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx', '20250117')
+    ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx', 'result')
     # ce.classify()
-    ce.set_count()
+    ce.set_forms()

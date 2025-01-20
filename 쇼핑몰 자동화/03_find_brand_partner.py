@@ -19,7 +19,7 @@ class ClassificationExcel:
         self.brands = df_partners['브랜드'].to_list()
         self.partners = df_partners['업체명'].to_list()
 
-
+# 이전 코드와 달라진 부분
     def classify(self):
         
         for i, row in self.order_list.head(5).iterrows(): # df 데이터를 >> 이터로우즈=2개의 행들을 쭉 반복하겠다는 뜻 / head(5)=너무 많아서 복잡하니까 위에서 5개만 뽑겠다
@@ -37,7 +37,7 @@ class ClassificationExcel:
 
         print(len(self.brands), self.brands)
         print(len(self.partners), self.partners)
-
+# 이전 코드와 달라진 부분
 
 if __name__ == '__main__':
     ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx')
