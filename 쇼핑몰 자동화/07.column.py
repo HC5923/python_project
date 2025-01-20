@@ -1,10 +1,11 @@
-# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 06. 폰트 지정하고 여러개 파일에 모두 적용하기
+# Ch02. 쇼핑몰 주문 요청서 분류 자동화 프로젝트 - 07. 컬럼명과 주문내역에 서식 지정하기
 import os # 이전 코드와 달라진 부분
 import pandas as pd
 from openpyxl.reader.excel import load_workbook
 from datetime import datetime
-from openpyxl.styles import Font, Alignment # 이전 코드와 달라진 부분
+from openpyxl.styles import Font, Alignment, PatternFill # 이전 코드와 달라진 부분
 # pd.set_option('display.max_columns', None)
+from openpyxl.utils import get_column_letter
 
 class ClassificationExcel:
 
@@ -43,7 +44,7 @@ class ClassificationExcel:
 
             df_filtered = self.order_list[self.order_list['상품명'].str.contains(brand_name)]
             # print(df_filtered)
-            df_filtered.to_excel(f'{self.path}/[메가몰] {partner_name}.xlsx')
+            df_filtered.to_excel(f'{self.path}/[메가몰] {partner_name}.xlsx', index=False)
 
     def set_form(self, file_name): # 이전 코드와 달라진 부분
         wb = load_workbook(file_name)
@@ -66,6 +67,23 @@ class ClassificationExcel:
         ws.merge_cells('A1:U1')
         ws['A1'].alignment = Alignment(horizontal='left')
 
+        # 열 너비 지정
+        # 1~25(Z)
+        for i in range(1, 25 + 1):
+            ws.column_dimensions[get_column_letter(i)].width = 13
+            
+        for col_letter in ['I', 'J', 'W', 'X']:
+            ws.column_dimensions[col_letter].width = 40
+
+        # 컬럼명
+        for row in ws.iter_rows(min_row=3, max_row=3):
+            for cell in row:
+                cell.fill = PatternFill(fgColor='B2B2B2', fill_type='solid') #solid: 단색 채우기
+
+        # 주문 목록
+        for row in ws.iter_rows(min_row=4):
+            for cell in row:
+                cell.fill = PatternFill(fgColor='FFFFCC', fill_type='solid') #solid: 단색 채우기
 
         wb.save(file_name)
 
@@ -82,5 +100,5 @@ class ClassificationExcel:
 
 if __name__ == '__main__':
     ce = ClassificationExcel('주문목록20221112_NEW.xlsx', '파트너목록_NEW.xlsx', '20250117')
-    # ce.classify()
+    ce.classify()
     ce.set_forms()
