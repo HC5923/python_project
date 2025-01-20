@@ -3,7 +3,7 @@ import os # 이전 코드와 달라진 부분
 import pandas as pd
 from openpyxl.reader.excel import load_workbook
 from datetime import datetime
-from openpyxl.styles import Font, Alignment, PatternFill # 이전 코드와 달라진 부분
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side # 이전 코드와 달라진 부분
 # pd.set_option('display.max_columns', None)
 from openpyxl.utils import get_column_letter
 
@@ -75,6 +75,9 @@ class ClassificationExcel:
         for col_letter in ['I', 'J', 'W', 'X']:
             ws.column_dimensions[col_letter].width = 40
 
+        for col_letter in ['A', 'V', 'H']:
+            ws.column_dimensions[col_letter].width = 26
+
         # 컬럼명
         for row in ws.iter_rows(min_row=3, max_row=3):
             for cell in row:
@@ -83,7 +86,14 @@ class ClassificationExcel:
         # 주문 목록
         for row in ws.iter_rows(min_row=4):
             for cell in row:
+                cell.alignment = Alignment(wrap_text=True, horizontal='center', vertical='center', shrink_to_fit=True)
                 cell.fill = PatternFill(fgColor='FFFFCC', fill_type='solid') #solid: 단색 채우기
+                cell.border = Border(
+                    left=Side(style='thin'),
+                    right=Side(style='thin'),
+                    top=Side(style='thin'),
+                    bottom=Side(style='thin')
+                )
 
         wb.save(file_name)
 
